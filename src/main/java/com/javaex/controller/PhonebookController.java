@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,19 @@ public class PhonebookController {
 		return "redirect:/list";
 	}
 
+	@RequestMapping(value = "write2", method = { RequestMethod.GET, RequestMethod.POST })
+	public String write2(@ModelAttribute PersonVo personVo) {
+		System.out.println("write");
+		System.out.println(personVo);
+
+//		int count = phonebookDao.insertPerson(personVo);
+		phonebookService.exeWritePerson2(personVo);
+//		System.out.println(count);
+
+		return "redirect:/list";
+	}
+
+
 //	@RequestMapping(value = "/write2", method = { RequestMethod.GET, RequestMethod.POST })
 //	public String write2(@RequestParam String name, @RequestParam String hp, @RequestParam String company) {
 //		System.out.println("wirte2");
@@ -78,7 +92,7 @@ public class PhonebookController {
 	// 수정 폼
 	@RequestMapping(value = "editform", method = { RequestMethod.GET, RequestMethod.POST })
 	public String editform(@RequestParam(value = "no") int personId, Model model) {
-		// DAO를 사용해 DB에서 데이터 
+		// DAO를 사용해 DB에서 데이터
 		System.out.println("editform");
 		PersonVo person = phonebookService.exeEditForm(personId);
 
@@ -87,6 +101,20 @@ public class PhonebookController {
 		phonebookService.exeEditForm(personId);
 		// 뷰 이름 반환
 		return "editForm"; // editForm.jsp 또는 다른 뷰 파일로 이동
+	}
+
+	@RequestMapping(value = "editform2", method = { RequestMethod.GET, RequestMethod.POST })
+	public String editform2(@RequestParam(value = "no") int no, Model model) {
+		// DAO를 사용해 DB에서 데이터
+		System.out.println("editform2");
+		
+		Map<String, Object> personMap = phonebookService.exeEditForm2(no);
+		System.out.println(personMap);
+//		// 가져온 데이터를 모델에 추가
+		model.addAttribute("personMap", personMap);
+//		phonebookService.exeEditForm2(no);
+		// 뷰 이름 반환
+		return "editForm2"; // editForm.jsp 또는 다른 뷰 파일로 이동
 	}
 
 	// 수정

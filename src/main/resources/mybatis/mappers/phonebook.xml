@@ -4,6 +4,13 @@
 
 <mapper namespace="phonebook">
 
+	<resultMap id="resultMapPersonVo" type="com.javaex.vo.PersonVo">
+		<result column="person_id" property="personId" /> <!-- 매핑된 setPersonId() 메서드 호출 -->
+		<result column="name" property="name" />
+		<result column="hp" property="hp" />
+		<result column="company" property="company" />
+	</resultMap>
+
 	<delete id="delete" parameterType="int">
 		<![CDATA[
 			delete from person
@@ -17,7 +24,14 @@
 			values(null, #{name}, #{hp}, #{company}) 
 		]]>
 	</insert>
-	
+
+	<insert id="insert2" parameterType="map">
+		<![CDATA[
+			insert into person 
+			values(null, #{name}, #{hp}, #{company}) 
+		]]>
+	</insert>
+
 	<select id="selectList" resultType="com.javaex.vo.PersonVo">
 		<![CDATA[
 			select 	person_id as personId,
@@ -27,10 +41,21 @@
 			from person
 			]]>
 	</select>
-	
+
+	<select id="selectOneMap" parameterType="int" resultType="map">
+		<![CDATA[
+			select 	person_id personId,
+					name,
+					hp,
+					company
+			from person
+			where person_id = #{no}
+			]]>
+	</select>
+
 	<select id="selectOne" parameterType="int" resultType="com.javaex.vo.PersonVo">
 		<![CDATA[
-			select 	person_id as personId,
+			select 	person_id,
 					name,
 					hp,
 					company
@@ -48,4 +73,6 @@
 			where person_id = #{personId}
 			]]>
 	</select>
+
+
 </mapper>

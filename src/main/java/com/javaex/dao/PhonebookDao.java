@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,16 +88,37 @@ public class PhonebookDao {
 
 	// 사람 1명 정보 가져오기
 	public PersonVo getPersonOne(int no) {
-		
+
 		PersonVo personVo = sqlSession.selectOne("phonebook.selectOne", no);
-	
+
 		return personVo;
+	}
+
+	public Map<String, Object> getPersonOne2(int no) {
+
+//		PersonVo personVo = sqlSession.selectOne("phonebook.selectOne", no);
+		Map<String, Object> personMap = sqlSession.selectOne("phonebook.selectOneMap", no);
+		System.out.println(personMap);
+
+		return personMap;
 	}
 
 	// 사람정보 저장
 	public int insertPerson(PersonVo personVo) {
 
 		int count = sqlSession.insert("phonebook.insert", personVo);
+
+		return count;
+
+	}
+
+	public int insertPerson2(PersonVo personVo) {
+
+//		int count = sqlSession.insert("phonebook.insert", personVo);
+
+		Map<String, String> pMap = new HashMap<String, String>();
+
+		int count = sqlSession.insert("phonebook.insert2", pMap);
 
 		return count;
 
